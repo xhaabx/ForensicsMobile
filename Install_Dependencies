@@ -1,0 +1,29 @@
+#!/bin/bash
+# install Dependencies
+# Gabriel Haab, August 2019
+
+# ===== Check Sudo =======
+if [ $(id -u) != "0" ]; then
+
+    echo "Voce precisa ser root para iniciar esse script, tente:\nsudo $0"
+echo "\n"
+    exit 1
+fi
+# ========================
+
+
+echo "================ Installing dependencies.... ================" 
+sleep 5
+apt update
+apt install adb viking exiftool
+pip3 install guizero 
+
+echo "================ Adjusting the Files ================"
+
+chmod a+x Forense_Mobile.py
+chmod a+x ADB_Backup 
+chmod a+x GeoPhoto
+chmod a+x Plot_Points
+chmod a+x Create_Report
+
+echo "Pronto!"

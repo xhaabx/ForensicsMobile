@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -d Backup ]; then
+rm -r Backup 
+fi
+
+mkdir Backup
+mkdir Backup/tmp
+
+adb pull /sdcard/DCIM/Camera Backup/Camera
+

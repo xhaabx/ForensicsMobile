@@ -1,0 +1,36 @@
+#!/bin/bash
+# Gabriel Haab August 2019
+# Geolocation script for photos
+
+if [ -f "Backup/tmp/GPS_FILE" ]; then
+	rm Backup/tmp/GPS_FILE
+fi
+
+cont=0
+for f in Backup/Camera/*.jpg
+do
+
+echo -n `echo $f | cut -d '/' -f 3`  >> Backup/tmp/GPS_FILE
+
+GPS=`exiftool $f | grep GPS\ Position | cut -d ':' -f 2 | sed ' s/[^0-9NEWS]/ /g' | awk '$1=$1' | awk '{print $1,$2,$3,$5,$6,$7,$8,$10}' | awk '{if ($4=="N" && $8=="E") {printf ("%.4f\t%.4f\n",$1+$2/60+$3/3600,$5+$6/60+$7/3600)} \
+else if ($4=="N" && $8="W") {printf ("%.6f\t%.6f\n",$1+$2/60+$3/3600,-($5+$6/60+$7/3600))} \
+else if ($4=="S" && $8="E") {printf ("%.6f\t%.6f\n",-($1+$2/60+$3/3600),$5+$6/60+$7/3600)} \
+else if ($4=="S" && $8=="W") {printf ("%.6f\t%.6f\n",-($1+$2/60+$3/3600),-($5+$6/60+$7/3600))}}'` 
+
+echo -n ' ' >> Backup/tmp/GPS_FILE
+echo -n $GPS >> Backup/tmp/GPS_FILE
+echo ' ' >> Backup/tmp/GPS_FILE
+
+let "cont++" 
+
+clear 
+echo "Recolhendo Posicao geografica de:"
+echo $f | cut -d '/' -f 3
+echo -n $cont
+echo -n " de `ls Backup/Camera/*.jpg | wc -l`"
+
+done 
+
+echo ""
+echo "Pronto! O arquivo Backup/tmp/GPS_DATA contem o nome da foto e a posicao geografica"
+
