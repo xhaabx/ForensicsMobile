@@ -1,3 +1,5 @@
+This repository was created to auxiliate the brazilian team
+
 Para instalar as dependencias: 
 
 chmod a+x Install_Dependencies 
